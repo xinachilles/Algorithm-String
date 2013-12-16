@@ -8,7 +8,7 @@ namespace ConsoleApplication1
     class MyString
     {
         private string testString;
-      
+
         private static void sortStr(ref string s)
         {
 
@@ -36,12 +36,12 @@ namespace ConsoleApplication1
         }
 
 
-        #endregion 
+        #endregion
 
         #region 1.2
 
 
-        #endregion 
+        #endregion
 
         #region 1.3
         //   Given two strings, write a method to decide if one is a permutation of the other.
@@ -111,13 +111,179 @@ namespace ConsoleApplication1
         }
         #endregion "1.3"
 
-               
-        
+        #region 1.4
+        //Write a method to replace all spaces in a string with '%20'. You may assume that the
+        //string has sufficient space at the end of the string to hold the additional characters,
+        //and that you are given the "true" length of the string. (Note: if implementing in Java,
+        //please use a character array so that you can perform this operation in place.)
+        public char[] ReplaceSpeces(char[] str)
+        {
+            int i = 0;
+
+            foreach (char s in str)
+            {
+                if (char.IsWhiteSpace(s))
+                {
+                    i = i + 1;
+                }
+
+            }
+
+
+            char[] newStr = new char[i * 3 + (str.Length - i)];
+            int j = str.Length - i;
+            int k = 0;
+
+            foreach (char item in str)
+            {
+                if (Char.IsWhiteSpace(item) == false)
+                {
+                    newStr[k] = item;
+                    k = k + 1;
+                }
+            }
+
+            while (j < newStr.Length)
+            {
+                newStr[j] = '%';
+                newStr[j + 1] = '2';
+                newStr[j + 2] = '0';
+                j = j + 3;
+            }
+
+            return newStr;
+
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="str"></param>
+        public char[] ReplaceSpacesTwo(char[] str)
+        {
+            int spaceCount = 0, newLength, i;
+            for (i = 0; i < str.Length; i++)
+            {
+                if (str[i] == ' ')
+                {
+                    spaceCount++;
+                }
+            }
+            newLength = str.Length + spaceCount * 2;
+            char[] newStr = new char[newLength];
+
+
+
+            for (i = str.Length - 1; i >= 0; i--)
+            {
+                if (Char.IsWhiteSpace(str[i]))
+                {
+                    newStr[newLength - 1] = '0';
+                    newStr[newLength - 2] = '2';
+                    newStr[newLength - 3] = '%';
+                    newLength = newLength - 3;
+                }
+                else
+                {
+                    newStr[newLength - 1] = str[i];
+                    newLength = newLength - 1;
+                }
+            }
+
+            return newStr;
+        }
+
+        #endregion
+
+        #region 1.5
+        //This code doesn't handle the case when the compressed string is longer than the original//
+//string, but it otherwise works. Is it efficient though? Take a look at the runtime of
+//this code.
+
+        // bad example 
+        public String compressBad(String str)
+        {
+            String mystr = "";
+            char last = str[0];
+            int count = 1;
+            for (int i = 1; i < str.Length; i++)
+            {
+                if (str[i] == last)
+                { // Found repeat char
+                    count++;
+                }
+                else
+                { // Insert char count, and update last char
+                    mystr += last + "" + count;
+                    last = str[i];
+                    count = 1;
+                }
+            }
+            return mystr + last + count;
+        }
+
+        public string CompressBetter(string str)
+        {
+
+            char last = str[0];
+            int count = 0;
+            List<string> newStr = new List<string>();
+            for (int i = 1; i <str.Length; i++)
+            {
+                if (str[i] == last)
+                {
+                    count++;
+                }
+                else {
+                    newStr.Add(last.ToString());
+                    newStr.Add(count.ToString());
+                    count = 0;
+                    last = str[i];
+                    
+                } 
+
+            }
+
+            newStr.Add(last.ToString());
+            newStr.Add(count.ToString());
+
+            return newStr.ToArray().ToString();
+        }
+
+
+        public int CountCdmpression(String str)
+        {
+            int size = 0;
+            if (string.IsNullOrEmpty(str) == false)
+            {
+                char last = str[0];
+
+                int count = 1;
+                for (int i = 1; i < str.Length; i++)
+                {
+                    if (str[i] == last)
+                    {
+                        count++;
+                    }
+                    else
+                    {
+                        last = str[i];
+                        size += 1 + count.ToString().Length;
+                        count = 1;
+                    }
+                }
+                size += 1 + count.ToString().Length;
+
+            }
+            return size;
+        }
+        #endregion
+
+  
         #region 1.6
 
         //Given an image represented by an nxn matrix, where each pixel in the image is 4 bytes, write a method to rotate the image by 90 degrees. Can you do this in place?
 
-        public void Rotate(int[][] matrix, int n)
+        public void Rotate(int[,] matrix, int n)
         {
             for (int layer = 0; layer < n / 2; ++layer)
             {
@@ -127,19 +293,19 @@ namespace ConsoleApplication1
                 {
                     int offset = i - first;
                     // save top
-                    int top = matrix[first][i];
+                    int top = matrix[first,i];
 
                     // left -> top
-                    matrix[first][i] = matrix[last - offset][first];
+                    matrix[first,i] = matrix[last - offset,first];
 
                     // bottom -> left
-                    matrix[last - offset][first] = matrix[last][last - offset];
+                    matrix[last - offset,first] = matrix[last,last - offset];
 
                     // right -> bottom
-                    matrix[last][last - offset] = matrix[i][last];
+                    matrix[last,last - offset] = matrix[i,last];
 
                     // top -> right
-                    matrix[i][last] = top;
+                    matrix[i,last] = top;
                 }
             }
         }
@@ -199,12 +365,16 @@ namespace ConsoleApplication1
 
         #endregion
 
+
+
+
+
         private string revStr()
         {
-            
+
             if (testString != null)
             {
-                char[] r = new char[ testString.Length];
+                char[] r = new char[testString.Length];
                 int i;
                 int n;
                 n = testString.Length - 1;
@@ -247,14 +417,14 @@ namespace ConsoleApplication1
         }
 
 
-        private string  Uniquecharacters()
+        private string Uniquecharacters()
         {
             string result = null;
             if (testString != null)
             {
-               
+
                 int i;
-               
+
 
                 for (i = 0; i <= testString.Length - 1; i++)
                 {
@@ -262,11 +432,11 @@ namespace ConsoleApplication1
                     bool unique = true;
                     for (int j = 0; j < testString.Length; j++)
                     {
-                        if (a == testString[j]&& j!=i)
+                        if (a == testString[j] && j != i)
                         {
                             unique = false;
                             break;
-                            
+
                         }
 
                     }
@@ -276,14 +446,14 @@ namespace ConsoleApplication1
 
                 }
 
-                
+
             }
 
             return result;
 
         }
 
-        
+
         public static void repSpa(ref string s)
         {
             char[] n = s.ToArray();
@@ -355,21 +525,21 @@ namespace ConsoleApplication1
         {
             for (int i = 0; i < testString.Length; i++)
             {
-                if (testString[i]  == ' ')
+                if (testString[i] == ' ')
                 {
-                   testString = testString.Remove(i,1);
-                   testString= testString.Insert(i, inString);
-                       
+                    testString = testString.Remove(i, 1);
+                    testString = testString.Insert(i, inString);
+
                 }
 
-               
+
             }
 
             return testString;
         }
 
-       
-    
+
+
     }
 }
 
