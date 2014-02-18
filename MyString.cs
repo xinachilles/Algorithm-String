@@ -16,7 +16,26 @@ namespace ConsoleApplication1
 
         #region 1.1
         /*Implement an algorithm to determine if a string has all unique characters. What if
-        you cannot use additional data structures?*/
+        you cannot use additional data structures
+        string assume only for low case 'a-z' 
+        */
+
+        public bool IsUniqueChars2(String str)
+        {
+            bool[] char_set = new bool[256];
+            foreach (char item in str)
+            {
+                int i = (int)item;
+                if (char_set[i]) { return false; }
+                else { 
+                    char_set[i] = true; 
+                }
+
+            }
+
+            return true; 
+        
+        }
 
         public bool IsUniqueChars(String str)
         {
